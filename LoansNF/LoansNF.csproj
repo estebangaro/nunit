@@ -47,6 +47,7 @@
     <Compile Include="Domain\Applications\LoanTerm.cs" />
     <Compile Include="Domain\Applications\MonthlyRepaymentComparison.cs" />
     <Compile Include="Domain\Applications\ProductComparer.cs" />
+    <Compile Include="Domain\Applications\StructExample_1.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

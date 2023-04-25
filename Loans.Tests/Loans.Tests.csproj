@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LongTermShould.cs" />
+    <Compile Include="MonthlyRepaymentComparisonShould.cs" />
+    <Compile Include="ProductComparerShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
