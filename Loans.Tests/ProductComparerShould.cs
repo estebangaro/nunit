@@ -7,20 +7,52 @@ namespace Loans.Tests
     [TestFixture]
     public class ProductComparerShould
     {
-        [Test]
-        public void ReturnCorrectNumberOfComparisons()
+        List<LoanProduct> products;
+        ProductComparer productCompare_sut;
+
+        public ProductComparerShould()
+        {
+
+        }
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
             //Arrange Phase.
-            var productos = new System.Collections.Generic.List<LoanProduct>
+            products = new List<LoanProduct>
             {
                 new LoanProduct(1, "a", 1),
                 new LoanProduct(2, "b", 2),
                 new LoanProduct(3, "c", 3)
             };
+        }
+
+        [SetUp]
+        public void ArrangePhase_Setup()
+        {
+            //Arrange Phase.
+            var loan = new LoanAmount("MXN", 200_000m);
+            productCompare_sut = new ProductComparer(loan, products);
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            //Dispose data set in OneTimeSetUp method...
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            //Dispose data set in Setup method...
+        }
+
+        [Test]
+        public void ReturnCorrectNumberOfComparisons()
+        {
+            //Arrange Phase.
             var loanYears = 1;
-            var numberOfProducts = productos.Count;
-            var loan = new LoanAmount("MXN", 5000_000m);
-            var productCompare_sut = new ProductComparer(loan, productos);
+            var numberOfProducts = products.Count;
             var loanTerm = new LoanTerm(loanYears);
 
             //Act Phase.
@@ -36,15 +68,7 @@ namespace Loans.Tests
         public void NotReturnCorrectNumberOfComparisons()
         {
             //Arrange Phase.
-            var productos = new List<LoanProduct>
-            {
-                new LoanProduct(1, "a", 1),
-                new LoanProduct(2, "b", 2),
-                new LoanProduct(3, "c", 3)
-            };
             var loanYears = 1;
-            var loan = new LoanAmount("MXN", 5000_000m);
-            var productCompare_sut = new ProductComparer(loan, productos);
             var loanTerm = new LoanTerm(loanYears);
 
             //Act Phase.
@@ -58,16 +82,8 @@ namespace Loans.Tests
         public void ReturnComparisonForFistProduct()
         {
             //Arrange Phase.
-            var productos = new List<LoanProduct>
-            {
-                new LoanProduct(1, "a", 1),
-                new LoanProduct(2, "b", 2),
-                new LoanProduct(3, "c", 3)
-            };
             var RespectFirtMonthlyRepaymentComparison = new MonthlyRepaymentComparison("a", 1, 643.28m);
             var loanYears = 30;
-            var loan = new LoanAmount("MXN", 200_000m);
-            var productCompare_sut = new ProductComparer(loan, productos);
             var loanTerm = new LoanTerm(loanYears);
 
             //Act Phase.
@@ -81,33 +97,24 @@ namespace Loans.Tests
         public void ReturnComparisonForFistProduct_WithPartialKnownExpectedValues()
         {
             //Arrange Phase.
-            var productos = new List<LoanProduct>
-            {
-                new LoanProduct(1, "a", 1),
-                new LoanProduct(2, "b", 2),
-                new LoanProduct(3, "c", 3)
-            };
-
             var loanYears = 30;
             var loan = new LoanAmount("MXN", 200_000m);
-            var productCompare_sut = new ProductComparer(loan, productos);
             var loanTerm = new LoanTerm(loanYears);
 
             //Act Phase.
             List<MonthlyRepaymentComparison> monthlyRepaymentComparision = productCompare_sut.CompareMonthlyRepayments(loanTerm);
 
             //Assert Phase.
-            Assert.That(monthlyRepaymentComparision, Has.Exactly(1)
-                .Property("ProductName").EqualTo("a")
-                .And
-                .Property("InterestRate").EqualTo(1)
-                .And
-                .Property("MonthlyRepayment").GreaterThan(0m));
+            //Assert.That(monthlyRepaymentComparision, Has.Exactly(1)
+            //    .Property("ProductName").EqualTo("a")
+            //    .And
+            //    .Property("InterestRate").EqualTo(1)
+            //    .And
+            //    .Property("MonthlyRepayment").GreaterThan(0m));
 
-            //Equivalent.
             Assert.That(monthlyRepaymentComparision, Has.Exactly(1)
-                .Matches<MonthlyRepaymentComparison>(item =>
-                    item.ProductName.Equals("a") && item.InterestRate.Equals(1) && item.MonthlyRepayment >= 0m));
+                .Matches(new MonthlyRepaymentGreatherThanZeroConstraint(
+                    expectedProductName: "a", expectedInterestRate: 1)));
         }
     }
 }

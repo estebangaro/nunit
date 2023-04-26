@@ -193,7 +193,7 @@ namespace Loans.Tests.Fixtures
         }
 
         [Test]
-        [Category("EqualityComparision")]
+        [EqualityComparision]
         public void RespectValueEquality()
         {
             //Arreage Phase.
@@ -210,7 +210,7 @@ namespace Loans.Tests.Fixtures
         }
 
         [Test]
-        [Category("EqualityComparision")]
+        [EqualityComparision]
         public void RespectValueInequality()
         {
             //Arreage Phase.

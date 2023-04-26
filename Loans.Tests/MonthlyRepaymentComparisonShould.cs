@@ -6,7 +6,7 @@ namespace Loans.Tests
     public class MonthlyRepaymentComparisonShould
     {
         [Test]
-        [Category("EqualityComparision")]
+        [EqualityComparision]
         public void ReturnEqualityMonthlyRepaymentComparison()
         {
             //Arrange Phase.
